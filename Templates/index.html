@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Generation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-aicUz8v5LP8xmKM5PBq5c67QvE0t7NlLOw+Y95hDFJ6O4vaLHZUECEAsgVgVfbMm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #2196F3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 20px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            border: 1px solid #bdc3c7;
+            border-radius: 10px;
+            background-color: #e3f2fd;
+            color: #333333;
+            resize: none;
+        }
+
+        input[type="submit"] {
+            background-color: #2196F3;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1e87db;
+        }
+
+        #output {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .social-icons {
+            margin-top: 30px;
+            font-size: 24px;
+        }
+
+        .social-icons a {
+            color: #2196F3;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #1e87db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Code Generation Tool</h1>
+        <form action="/generate" method="post">
+            <textarea name="user_code" rows="10" placeholder="Enter your code here"></textarea>
+            <br>
+            <input type="submit" value="Generate Output">
+        </form>
+        <div id="output"></div>
+        <div class="social-icons">
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/generate', {
+                method: 'POST',
+                body: formData
+            });
+            const output = await response.text();
+            document.getElementById('output').innerText = "Output: " + output;
+        });
+    </script>
+</body>
+
+</html>
