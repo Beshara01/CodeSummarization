@@ -3,7 +3,7 @@ from transformers import AutoModel, AutoTokenizer
 
 app = Flask(__name__)
 
-checkpoint = "Salesforce/codet5p-220m-bimodal"
+checkpoint = "checkpoint1"
 device = "cpu"  
 
 tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
