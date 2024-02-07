@@ -16,13 +16,13 @@ def run_training(args, model, train_data):
         do_train=True,
         save_strategy='epoch',
 
-        num_train_epochs=args.epochs,
-        per_device_train_batch_size=args.batch_size_per_replica,
+        num_train_epochs=10,
+        per_device_train_batch_size=8,
         gradient_accumulation_steps=args.grad_acc_steps,
 
-        learning_rate=args.lr,
+        learning_rate=2e-2,
         weight_decay=0.05,
-        warmup_steps=args.lr_warmup_steps,
+        warmup_steps=200,
 
         logging_dir=args.save_dir,
         logging_first_step=True,
@@ -66,8 +66,8 @@ def load_tokenize_data(args):
             source = [' '.join(ex) for ex in examples["code_tokens"]]
             target = [' '.join(ex) for ex in examples["docstring_tokens"]]
 
-            model_inputs = tokenizer(source, max_length=args.max_source_len, padding="max_length", truncation=True)
-            labels = tokenizer(target, max_length=args.max_target_len, padding="max_length", truncation=True)
+            model_inputs = tokenizer(source, max_length=320, padding="max_length", truncation=True)
+            labels = tokenizer(target, max_length=128, padding="max_length", truncation=True)
 
             model_inputs["labels"] = labels["input_ids"].copy()
             model_inputs["labels"] = [
@@ -111,18 +111,12 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="CodeT5+ finetuning on Seq2Seq LM task")
+    parser = argparse.ArgumentParser()
     parser.add_argument('--data-num', default=-1, type=int)
-    parser.add_argument('--max-source-len', default=320, type=int)
-    parser.add_argument('--max-target-len', default=128, type=int)
     parser.add_argument('--cache-data', default='cache_data/summarize_python', type=str)
     parser.add_argument('--load', default='Salesforce/codet5p-220m', type=str)
 
     # Training
-    parser.add_argument('--epochs', default=10, type=int)
-    parser.add_argument('--lr', default=5e-5, type=float)
-    parser.add_argument('--lr-warmup-steps', default=200, type=int)
-    parser.add_argument('--batch-size-per-replica', default=8, type=int)
     parser.add_argument('--grad-acc-steps', default=4, type=int)
     parser.add_argument('--local_rank', default=-1, type=int)
     parser.add_argument('--deepspeed', default=None, type=str)
