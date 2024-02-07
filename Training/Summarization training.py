@@ -58,8 +58,8 @@ def load_tokenize_data(args):
         print(f'  ==> Loaded {len(train_data)} samples')
         return train_data
     else:
-        # Example code to load and process code_x_glue_ct_code_to_text python dataset for code summarization task
-        datasets = load_dataset("code_x_glue_ct_code_to_text", 'python', split="train")
+        # Example code to load and process dataset for code summarization task
+        datasets = load_dataset("Dataset", 'python', split="train")
         tokenizer = AutoTokenizer.from_pretrained(args.load)
 
         def preprocess_function(examples):
